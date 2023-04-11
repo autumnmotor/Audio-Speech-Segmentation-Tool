@@ -1,11 +1,11 @@
 # Audio Speech Segmentation Tool for RVC
 RVCのための音声スピーチセグメンテーションツール
 
-## これって何。
+## これって何
 このPythonスクリプトは[RVC](https://github.com/liujing04/Retrieval-based-Voice-Conversion-WebUI)のための
 オーディオファイル群を分割、整音するツールです。
 
-## 使い方。
+## 使い方
 python環境に、ソースの冒頭にあるライブラリ、librosa, pydubをインストールして使用してください。
 
 `pip install librosa`
