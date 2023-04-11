@@ -12,6 +12,8 @@ python環境に、ソースの冒頭にあるライブラリ、librosa, pydubを
 
 `pip install pydub`
 
+`python speech_seg_tool.py`
+
 ## パラメータの説明
 ### ファイル関連
 
