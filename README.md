@@ -32,7 +32,7 @@ python環境に、ソースの冒頭にあるライブラリ、librosa, pydubを
 | --keep_silence| 無音期間をどれくらい残すか。 | msec、あるいはTrue（全部残す）, False(全部残さない) | 50 |
 
 
-### その他各種処理関連。こちらも[pydubのドキュメント](https://github.com/jiaaro/pydub/blob/master/API.markdown)を見よ。
+### その他各種処理関連。こちらも[pydubのドキュメント](https://github.com/jiaaro/pydub/blob/master/API.markdown)と[pydub.effectsのソース](https://github.com/jiaaro/pydub/blob/master/pydub/effects.py)を見よ。
 | パラメータ名 | 説明 | 単位 | デフォルトの値 |
 | :-- | :-: | :-: | --: |
 | --fade_duration | フェードイン/アウトの期間 | msec | 50 |
