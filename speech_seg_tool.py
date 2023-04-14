@@ -16,6 +16,7 @@ parser.add_argument('--outfile_suffix',default="segment_")
 parser.add_argument('--min_silence_len',default=300)
 parser.add_argument('--silence_thresh',default=-30)
 parser.add_argument('--keep_silence',default=50)
+parser.add_argument('--seek_step',default=5)
 
 # etc
 parser.add_argument('--fade_duration',default=50) # msec
@@ -23,7 +24,7 @@ parser.add_argument('--remove_dc_offset',default=True)
 parser.add_argument('--hpf_cutoff',default=80) # Hz
 parser.add_argument('--compressor',default=True)
 parser.add_argument('--head_room',default=0.1) # margin for normalize
-parser.add_argument('--mono_channel',default=0) # 0: left 1: right 
+parser.add_argument('--mono_channel',default=1) # 1: left 2: right 
 
 # 機械学習にディザは良くないらしいので、今は機能しない（実装もない）。
 dither = False
@@ -59,28 +60,35 @@ def proc(audio_segment):
 for i in range(len(filelist)):
 
     file_path = filelist[i]
-    print(f"try to load: {file_path}")
 
     try:
         audio, sr = librosa.load(file_path, sr=None)
+        print(f" load: {file_path}")
     except Error:
         print(f"can't load {file_path}")
         continue
- 
+
     basename=os.path.basename(file_path)
 
     audio_segment = AudioSegment.from_file(file_path)
 
     if args.mono_channel > 0:
-        audio_segment=audio_segment.split_to_mono()[args.mono_channel]
+        if args.mono_channel==1:
+            audio_segment=audio_segment.pan(-1.0)
+        elif args.mono_channel==2:
+            audio_segment=audio_segment.pan(+1.0)   
 
-    audio_segment=proc(audio_segment)
+    audio_segment=audio_segment.set_channels(1)
+
+    if args.head_room > 0:
+        audio_segment=effects.normalize(audio_segment, args.head_room)
+
 
     # 音声ファイルの前後には空白（沈黙）があると仮定した処理を行う。そうでないと、先頭および末尾の無駄な空白を取り除けないため。
     silent=AudioSegment.silent(duration=args.min_silence_len) 
     audio_segment = silent + audio_segment + silent
 
-    chunks = pydub.silence.split_on_silence(audio_segment,min_silence_len=args.min_silence_len, silence_thresh=args.silence_thresh,keep_silence=args.keep_silence)
+    chunks = pydub.silence.split_on_silence(audio_segment,min_silence_len=args.min_silence_len, silence_thresh=args.silence_thresh,keep_silence=args.keep_silence, seek_step=args.seek_step)
 
     for j, chunk in enumerate(chunks):
         chunk=proc(chunk)
