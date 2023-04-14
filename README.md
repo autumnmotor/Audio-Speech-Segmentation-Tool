@@ -30,6 +30,7 @@ python環境に、ソースの冒頭にあるライブラリ、librosa, pydubを
 | --min_silence_len | 無音とみなす最小の期間。 | msec | 300 |
 | --silence_thresh | 無音の閾値 | dBFS | -30 |
 | --keep_silence| 無音期間をどれくらい残すか。 | msec、あるいはTrue（全部残す）, False(全部残さない) | 50 |
+| --seek_step| 無音期間探索のためのステップ期間。値が小さいほど精度が増し、負荷は増大する。 | msec | 10 |
 
 
 ### その他各種処理関連。こちらも[pydubのドキュメント](https://github.com/jiaaro/pydub/blob/master/API.markdown)と[pydub.effectsのソース](https://github.com/jiaaro/pydub/blob/master/pydub/effects.py)を見よ。
@@ -40,7 +41,7 @@ python環境に、ソースの冒頭にあるライブラリ、librosa, pydubを
 | --hpf_cutoff| ハイパスフィルター（HPF）のカットオフ周波数 | Hz | 80 |
 | --compressor | コンプレッサーをかけ、ダイナミックレンジを圧縮するか | bool | True |
 | --head_room | ノーマライズ処理のためのマージンルーム | dBFS | 0.1 |
-| --mono_channel| モノラル化で左右どちらの信号を使用するか | 0:左, 1:右 | 0 |
+| --mono_channel| モノラル化で左右どちらの信号を使用するか | 1:左, 2:右, それ以外:左右の平均（これは音質を劣化させうる！） | 1 |
 
 ## やっていること
 - 音源のフェードイン・フェードアウト処理
