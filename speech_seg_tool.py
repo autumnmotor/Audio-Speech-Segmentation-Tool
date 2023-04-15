@@ -24,17 +24,17 @@ parser.add_argument('--output_dir',default="output")
 # split silent
 parser.add_argument('--min_silence_len',default=300)
 parser.add_argument('--silence_thresh',default=-30)
-parser.add_argument('--keep_silence',default=50)
+parser.add_argument('--keep_silence',default=30)
 parser.add_argument('--seek_step',default=5)
 
 # etc
-parser.add_argument('--fade_duration',default=50) # msec
+parser.add_argument('--fade_duration',default=30) # msec
 parser.add_argument('--remove_dc_offset',default=True)
 parser.add_argument('--hpf_cutoff',default=80) # Hz
 parser.add_argument('--head_room',default=0.1) # margin for normalize
 parser.add_argument('--mono_channel',default=1) # 1: left 2: right 
 parser.add_argument('--voicefixer',default=0) # mode
-parser.add_argument('--noisereduce',default=0.1)
+parser.add_argument('--noisereduce',default=0.3)
 
 args = parser.parse_args()
 
@@ -81,17 +81,21 @@ for i in range(len(filelist)):
     audio_segment = None
 
     try:
+        audio_segment = AudioSegment.from_file(file_path)
+
         if args.voicefixer >= 0:
-            print("voicefixer")
-            voicefixer.restore(input=file_path,
-                        output=file_path+"."+save_ext,
-                        cuda=False, # GPU acceleration
-                        mode=args.voicefixer)
-            print("fixed")
-            audio_segment = AudioSegment.from_file(file_path+"."+save_ext)
-            os.remove(file_path+"."+save_ext)
-        else:
-            audio_segment = AudioSegment.from_file(file_path)
+            if audio_segment.frame_rate < 44100:
+                print("voicefixer")
+                voicefixer.restore(input=file_path,
+                            output=file_path+"."+save_ext,
+                            cuda=False, # GPU acceleration
+                            mode=args.voicefixer)
+                print("fixed")
+
+                audio_segment = AudioSegment.from_file(file_path+"."+save_ext)
+                os.remove(file_path+"."+save_ext)
+            else:
+                print(f"ignore voicefixer, Sufficient frame rate:{audio_segment.frame_rate}")
 
         print(f"load: {file_path}")
     except Exception as e:
