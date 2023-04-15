@@ -36,7 +36,6 @@ RVCのための音声スピーチセグメンテーションツール
 | :-- | :-: | --: |
 | --input_dir | 入力ディレクトリ。ここにオーディオファイル群を入れます。 | input |
 | --output_dir | 出力ディレクトリ。ここに分割等各種処理されたオーディオファイル群が格納されます。自動的に作らないので注意。 | output |
-| --outfile_suffix | 出力ファイルの接尾辞です。 | segment_ |
 
 ### 区間分割関連。[pydubのドキュメント](https://github.com/jiaaro/pydub/blob/master/API.markdown)も見よ。
 
