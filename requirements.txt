@@ -1,3 +1,4 @@
 pydub
 noisereduce
+voicefixer
 numpy
