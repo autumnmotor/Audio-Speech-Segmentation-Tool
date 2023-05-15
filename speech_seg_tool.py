@@ -22,19 +22,19 @@ parser.add_argument('--input_dir', default="input")
 parser.add_argument('--output_dir',default="output")
 
 # split silent
-parser.add_argument('--min_silence_len',default=300)
-parser.add_argument('--silence_thresh',default=-30)
-parser.add_argument('--keep_silence',default=30)
-parser.add_argument('--seek_step',default=5)
+parser.add_argument('--min_silence_len',default=300,type=float)
+parser.add_argument('--silence_thresh',default=-30,type=float)
+parser.add_argument('--keep_silence',default=30,type=float)
+parser.add_argument('--seek_step',default=5,type=float)
 
 # etc
-parser.add_argument('--fade_duration',default=30) # msec
-parser.add_argument('--remove_dc_offset',default=True)
-parser.add_argument('--hpf_cutoff',default=80) # Hz
-parser.add_argument('--head_room',default=0.1) # margin for normalize
-parser.add_argument('--mono_channel',default=1) # 1: left 2: right 
-parser.add_argument('--voicefixer',default=0) # mode
-parser.add_argument('--noisereduce',default=0.3)
+parser.add_argument('--fade_duration',default=30,type=float) # msec
+parser.add_argument('--remove_dc_offset',default=True,type=bool)
+parser.add_argument('--hpf_cutoff',default=80,type=float) # Hz
+parser.add_argument('--head_room',default=0.1,type=float) # margin for normalize
+parser.add_argument('--mono_channel',default=1,type=int) # 1: left 2: right 
+parser.add_argument('--voicefixer',default=0,type=int) # mode
+parser.add_argument('--noisereduce',default=0.3,type=float)
 
 args = parser.parse_args()
 
